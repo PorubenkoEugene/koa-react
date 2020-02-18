@@ -1,21 +1,31 @@
 import bodyParser from 'koa-bodyparser';
 import Koa from 'koa';
 import logger from 'koa-logger';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import helmet from 'koa-helmet';
+import cors from '@koa/cors';
 import routing from './routes';
-import { port, connexionString } from './config';
+import { port } from './config';
+import {setUpConnection} from "./utils/DataBaseUtils";
 
-mongoose.connect(connexionString);
-mongoose.connection.on('error', console.error);
+setUpConnection()
+    .then(message=>console.log(`Connect to DB at port - ${port}`))
+    .catch(err=>console.log(err));
+
+// mongoose.connect(connexionString)
+//     .then(r =>r )
+//     .catch(err=>console.log(err));
+// mongoose.connection.on('error', console.error);
 
 // Create Koa Application
 const app = new Koa();
 
 app
-  .use(logger())
-  .use(bodyParser())
-  .use(helmet());
+    .use(bodyParser())
+    .use(cors())
+    .use(logger())
+    .use(bodyParser())
+    .use(helmet());
 
 routing(app);
 

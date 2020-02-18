@@ -13,6 +13,7 @@ export default ctx => {
       message: 'Successful Authentication'
     };
   } else {
+    console.log(ctx.request.body);
     ctx.status = 401;
     ctx.body = {
       message: 'Authentication Failed'

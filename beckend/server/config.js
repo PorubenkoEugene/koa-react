@@ -1,3 +1,3 @@
 export const port = process.env.PORT || 3000;
-export const connexionString = 'mongodb://localhost/koa-boilerplate';
+export const connexionString = 'mongodb://127.0.0.1:27017/mydbs';
 export const baseApi = 'api';
