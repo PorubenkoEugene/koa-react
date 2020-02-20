@@ -1,9 +1,14 @@
-const mongoose = require ('mongoose');
+import mongoose from 'mongoose'
 import { connexionString } from '../config';
 
-module.exports.setUpConnection = function () {
-    return mongoose.connect(connexionString, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
+export const setUpConnection = async () => {
+    try {
+        return await mongoose.connect(connexionString, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        })
+    } catch (e) {
+        throw e;
+    }
+
 };

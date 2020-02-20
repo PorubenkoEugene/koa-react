@@ -1,6 +1,6 @@
 import glob from 'glob';
 
-export default function(dirname) {
+export default (dirname) => {
   return new Promise((resolve, reject) => {
     const routes = [];
     glob(

@@ -1,7 +1,6 @@
 import bodyParser from 'koa-bodyparser';
 import Koa from 'koa';
 import logger from 'koa-logger';
-// import mongoose from 'mongoose';
 import helmet from 'koa-helmet';
 import cors from '@koa/cors';
 import routing from './routes';
@@ -12,10 +11,6 @@ setUpConnection()
     .then(message=>console.log(`Connect to DB at port - ${port}`))
     .catch(err=>console.log(err));
 
-// mongoose.connect(connexionString)
-//     .then(r =>r )
-//     .catch(err=>console.log(err));
-// mongoose.connection.on('error', console.error);
 
 // Create Koa Application
 const app = new Koa();
@@ -33,4 +28,5 @@ routing(app);
 app.listen(port, () =>
   console.log(`✅  The server is running at http://localhost:${port}/`)
 );
+
 export default app;

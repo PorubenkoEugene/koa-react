@@ -1,6 +1,6 @@
 import routesLoader from '../utils/routesLoader';
 
-export default function(app) {
+export default (app) => {
   routesLoader(`${__dirname}`).then(files => {
     files.forEach(route => {
       app.use(route.routes()).use(

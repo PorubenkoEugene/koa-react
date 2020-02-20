@@ -32,7 +32,7 @@ class CitiesControllers {
 
   /**
    * Add a city
-   * @param {ctx} Koa Context
+   * @param ctx
    */
   async add(ctx) {
     try {

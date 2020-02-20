@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.5.0",
+    "bcryptjs": "^2.4.3",
     "glob": "^7.1.4",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.7.0",
