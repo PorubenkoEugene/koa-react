@@ -4,8 +4,11 @@ import logger from 'koa-logger';
 import helmet from 'koa-helmet';
 import cors from '@koa/cors';
 import routing from './routes';
+import error from "./middlewares/error";
+
 import { port } from './config';
 import {setUpConnection} from "./utils/DataBaseUtils";
+
 
 setUpConnection()
     .then(message=>console.log(`Connect to DB at port - ${port}`))
@@ -16,6 +19,7 @@ setUpConnection()
 const app = new Koa();
 
 app
+    .use(error)
     .use(bodyParser())
     .use(cors())
     .use(logger())

@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
-import { connexionString } from '../config';
+import { connectionString } from '../config';
 
 export const setUpConnection = async () => {
     try {
-        return await mongoose.connect(connexionString, {
+        return await mongoose.connect(connectionString, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         })
