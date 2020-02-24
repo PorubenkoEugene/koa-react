@@ -1,17 +1,14 @@
-const crypto = require('crypto');
-const _ = require('lodash');
+import crypto from 'crypto';
+import _  from 'lodash';
 
-function hash(input) {
+export function hash(input) {
   if (_.isNil(input)) {
     throw new Error('Error creating hash value');
   }
-
   const hash = crypto.createHash('sha256');
-  const hashedData = hash.update(input).digest('hex');
-
-  return hashedData;
+  return hash.update(input).digest('hex');
 }
 
-module.exports = {
+export default {
   hash
 };
