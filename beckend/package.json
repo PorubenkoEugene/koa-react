@@ -24,7 +24,8 @@
     "koa-router": "^7.4.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "mongoose": "^5.6.4"
+    "mongoose": "^5.6.4",
+    "permit": "latest"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
