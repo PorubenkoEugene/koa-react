@@ -6,11 +6,12 @@ import { HTTP_STATUS } from '../../utils/constants';
 import { hash } from '../../utils/utils';
 import  {jwtSecret} from '../../config';
 import jwt from 'jsonwebtoken';
+import { Bearer } from 'permit';
+const permit = new Bearer({
+    query: 'Authorization',
+});
 
 class UsersControllers {
-    /* eslint-disable no-param-reassign */
-
-
     /**
      * Add a user
      * @param ctx
@@ -104,12 +105,51 @@ class UsersControllers {
         };
 
         const token = jwt.sign(payload, jwtSecret, {
-            expiresIn: '2m'
+            expiresIn: '30m'
         });
 
         ctx.status = HTTP_STATUS.CREATED;
+        ctx.set({'Authorization': `Bearer ${token}`});
         ctx.body = {
             token
+        };
+    }
+    /**
+     * Verify a user
+     * @param ctx
+     */
+
+    async verify(ctx) {
+        const { req } = ctx;
+
+        const token = permit.check(req);
+
+        if (!token) {
+            throw new HttpError({
+                status: HTTP_STATUS.UNAUTHORIZED,
+                code: 'E001',
+                message: 'Authentication required!',
+                shouldLog: false
+            });
+        }
+
+        let payload;
+        try {
+            payload = jwt.verify(token, jwtSecret);
+        } catch (e) {
+            throw new HttpError({
+                status: HTTP_STATUS.UNAUTHORIZED,
+                code: 'E002',
+                message: 'Invalid authentication',
+                shouldLog: false
+            });
+        }
+
+        const { email , createdAt } = payload;
+        ctx.status = HTTP_STATUS.OK;
+        ctx.body = {
+            email,
+            createdAt
         };
     }
 

@@ -2,7 +2,6 @@ import 'babel-polyfill';
 import Router from 'koa-router';
 import { baseApi } from '../config';
 import authenticate from '../middlewares/authenticate';
-
 const api = 'authenticate';
 
 const router = new Router();

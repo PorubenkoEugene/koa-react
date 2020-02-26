@@ -12,6 +12,7 @@ router.prefix(`/${baseApi}/${api}`);
 
 
 router.post('/',  UsersControllers.login);
+router.get('/',  UsersControllers.verify);
 
 
 
