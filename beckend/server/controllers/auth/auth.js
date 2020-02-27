@@ -11,7 +11,7 @@ const permit = new Bearer({
     query: 'Authorization',
 });
 
-class UsersControllers {
+class UsersAuthControllers {
     /**
      * Add a user
      * @param ctx
@@ -47,11 +47,12 @@ class UsersControllers {
         const insertedUser = await user.save();
 
         ctx.status = HTTP_STATUS.CREATED;
-        ctx.body = {
-            userId: insertedUser._id,
-            email,
-            createdAt: moment(now).format('YYYY-MM-DD HH:mm:ss')
-        };
+        // ctx.body = {
+        //     userId: insertedUser._id,
+        //     email,
+        //     createdAt: moment(now).format('YYYY-MM-DD HH:mm:ss')
+        // };
+        ctx.redirect('/api/login')
     }
 
     /**
@@ -114,46 +115,6 @@ class UsersControllers {
             token
         };
     }
-    /**
-     * Verify a user
-     * @param ctx
-     */
-
-    async verify(ctx) {
-        const { req } = ctx;
-
-        const token = permit.check(req);
-
-        if (!token) {
-            throw new HttpError({
-                status: HTTP_STATUS.UNAUTHORIZED,
-                code: 'E001',
-                message: 'Authentication required!',
-                shouldLog: false
-            });
-        }
-
-        let payload;
-        try {
-            payload = jwt.verify(token, jwtSecret);
-        } catch (e) {
-            throw new HttpError({
-                status: HTTP_STATUS.UNAUTHORIZED,
-                code: 'E002',
-                message: 'Invalid authentication',
-                shouldLog: false
-            });
-        }
-
-        const { email , createdAt } = payload;
-        ctx.status = HTTP_STATUS.OK;
-        ctx.body = {
-            email,
-            createdAt
-        };
-    }
-
-    /* eslint-enable no-param-reassign */
 }
 
-export default new UsersControllers();
+export default new UsersAuthControllers();
