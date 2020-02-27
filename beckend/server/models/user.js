@@ -18,13 +18,15 @@ const userSchema = new mongoose.Schema({
         min: 2,
         max: 1024
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
-    updated: {
-        type: Date,
-        default: Date.now
+    timestamps: {
+        createdAt: {
+            type: Date,
+            default: Date.now
+        },
+        updatedAt: {
+            type: Date,
+            default: Date.now
+        }
     }
 });
 
