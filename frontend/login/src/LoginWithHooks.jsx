@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useRef } from 'react';
 import { verifyLogin } from './utils';
 
 const initialState = {
-  username: '',
+  email: '',
   password: '',
   isLoading: false,
   isLoggedIn: false,
@@ -47,7 +47,7 @@ function loginReducer(state, action) {
       return {
         ...state,
         isLoggedIn: false,
-        username: '',
+        email: '',
         password: '',
         error: ''
       };
@@ -59,14 +59,15 @@ function loginReducer(state, action) {
 
 export default function LoginWithReducer() {
   const [state, dispatch] = useReducer(loginReducer, initialState);
-  const { username, password, isLoading, isLoggedIn, error, isFocused } = state;
+  const { email, password, isLoading, isLoggedIn, error, isFocused } = state;
   const usernameRef = useRef(null);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    dispatch({ type: verifyLogin });
+    // dispatch({ type: verifyLogin });
     try {
-      await verifyLogin({ username, password });
+      const response = await verifyLogin({email, password });
+      console.log(response)
       dispatch({ type: 'success' });
     } catch (error) {
       dispatch({ type: 'error' });
@@ -84,7 +85,7 @@ export default function LoginWithReducer() {
       <div className="login-container">
         {isLoggedIn ? (
           <>
-            <h1>Welcome {username}!</h1>
+            <h1>Welcome {email}!</h1>
             <button onClick={() => dispatch({ type: 'logout' })}>
               Log Out
             </button>
@@ -96,13 +97,13 @@ export default function LoginWithReducer() {
             <input
               type="text"
               ref={usernameRef}
-              placeholder="Enter username"
-              value={username}
+              placeholder="Enter username or email"
+              value={email}
               autoFocus
               onChange={e =>
                 dispatch({
                   type: 'field',
-                  fieldName: 'username',
+                  fieldName: 'email',
                   payload: e.currentTarget.value
                 })
               }
