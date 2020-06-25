@@ -13,44 +13,44 @@ class UsersAuthControllers {
      * Add a user
      * @param ctx
      */
-    // async register(ctx) {
-    //     const { email, password } = ctx.request.body;
-    //     if (_.isNil(email)) {
-    //         throw new HttpError({
-    //             code: 'E001',
-    //             status: HTTP_STATUS.BAD_REQUEST,
-    //             message: 'User name should not be empty'
-    //         });
-    //     }
-    //     if (_.isNil(password)) {
-    //         throw new HttpError({
-    //             code: 'E002',
-    //             status: HTTP_STATUS.BAD_REQUEST,
-    //             message: 'Password should not be empty'
-    //         });
-    //     }
-    //
-    //     const existingUser = await User.findOne({ email });
-    //
-    //     if (existingUser) {
-    //         throw new HttpError({
-    //             code: 'E003',
-    //             status: HTTP_STATUS.BAD_REQUEST,
-    //             message: `A user with such mail:${email} is already exists `
-    //         });
-    //     }
-    //     const now = new Date();
-    //     const user = new User({ email: email,hashedPassword: hash(password), createdAt: now });
-    //     const insertedUser = await user.save();
-    //
-    //     ctx.status = HTTP_STATUS.CREATED;
-        // ctx.body = {
-        //     userId: insertedUser._id,
-        //     email,
-        //     createdAt: moment(now).format('YYYY-MM-DD HH:mm:ss')
-        // };
-    //     ctx.redirect('/api/login')
-    // }
+    async register(ctx) {
+        const { email, password } = ctx.request.body;
+        if (_.isNil(email)) {
+            throw new HttpError({
+                code: 'E001',
+                status: HTTP_STATUS.BAD_REQUEST,
+                message: 'User name should not be empty'
+            });
+        }
+        if (_.isNil(password)) {
+            throw new HttpError({
+                code: 'E002',
+                status: HTTP_STATUS.BAD_REQUEST,
+                message: 'Password should not be empty'
+            });
+        }
+
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            throw new HttpError({
+                code: 'E003',
+                status: HTTP_STATUS.BAD_REQUEST,
+                message: `A user with such mail:${email} is already exists `
+            });
+        }
+        const now = new Date();
+        const user = new User({ email: email,hashedPassword: hash(password), createdAt: now });
+        const insertedUser = await user.save();
+
+        ctx.status = HTTP_STATUS.CREATED;
+        ctx.body = {
+            userId: insertedUser._id,
+            email,
+            createdAt: moment(now).format('YYYY-MM-DD HH:mm:ss')
+        };
+        ctx.redirect('/api/login')
+    }
 
     /**
      * Login a user
@@ -74,46 +74,23 @@ class UsersAuthControllers {
                 message: 'Password should not be empty'
             });
         }
-        console.log('Before User create');
         const user = await User.findOne({ email });
         console.log(user);
-        // if (!user) {
-        //     throw new HttpError({
-        //         code: 'E003',
-        //         status: HTTP_STATUS.UNAUTHORIZED,
-        //         message: `A user with such mail: (${email}) not found`
-        //     });
-        // }
-        if(!user) {
-            const now = new Date();
-            const user = new User({ email: email,hashedPassword: hash(password), createdAt: now });
-            const insertedUser = await user.save();
-
-            const payload = {
-                email,
-                createdAt: moment(now).format('YYYY-MM-DD HH:mm:ss')
-            };
-
-            const token = jwt.sign(payload, jwtSecret, {
-                expiresIn: '30m'
+        if (!user) {
+            throw new HttpError({
+                code: 'E003',
+                status: HTTP_STATUS.UNAUTHORIZED,
+                message: `A user with such mail: (${email}) not found`
             });
-            ctx.status = HTTP_STATUS.CREATED;
-            ctx.set({'Authorization': `Bearer ${token}`});
-            ctx.body = {
-                userId: insertedUser._id,
-                email,
-                createdAt: moment(now).format('YYYY-MM-DD HH:mm:ss')
-            };
-        } else {
-            const { hashedPassword } = user;
-
-            if (hash(password) !== hashedPassword) {
-                throw new HttpError({
-                    code: 'E004',
-                    status: HTTP_STATUS.UNAUTHORIZED,
-                    message: 'Invalid password'
-                });
-            }
+        }
+        const { hashedPassword } = user;
+        if (hash(password) !== hashedPassword) {
+            throw new HttpError({
+                code: 'E004',
+                status: HTTP_STATUS.UNAUTHORIZED,
+                message: 'Invalid password'
+            });
+        }
 
             const now = new Date();
 
@@ -132,7 +109,6 @@ class UsersAuthControllers {
                 token
             };
         }
-    }
 }
 
 export default new UsersAuthControllers();
