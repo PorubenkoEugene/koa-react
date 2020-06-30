@@ -10,22 +10,22 @@ const router = new Router();
 
 router.prefix(`/${baseApi}/${api}`);
 
-// GET /api/cities
+// GET /api/users
 router.get('/', UsersControllers.find);
 
-// POST /api/cities
+// POST /api/users
 // This route is protected, call POST /api/authenticate to get the token
-router.post('/', jwt, UsersControllers.add);
+router.post('/', UsersControllers.add);
 
-// GET /api/cities/id
+// GET /api/users/id
 // This route is protected, call POST /api/authenticate to get the token
 router.get('/:id', jwt, UsersControllers.findById);
 
-// PUT /api/cities/id
+// PUT /api/users/id
 // This route is protected, call POST /api/authenticate to get the token
 router.put('/:id', jwt, UsersControllers.update);
 
-// DELETE /api/cities/id
+// DELETE /api/users/id
 // This route is protected, call POST /api/authenticate to get the token
 router.delete('/:id', jwt, UsersControllers.delete);
 
